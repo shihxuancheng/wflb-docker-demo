@@ -1,3 +1,4 @@
+docker network rm wildnetwork
 docker network create \
   --driver=bridge \
   --subnet=172.28.0.0/16 \
