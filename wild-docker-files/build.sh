@@ -1,1 +1,1 @@
-docker build -t wildfly-cluster --build-arg APP_FILE=apptest.war .
+docker build -t wildfly-cluster --build-arg APP_FILE=zkWeb.war .
