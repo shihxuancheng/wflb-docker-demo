@@ -12,6 +12,7 @@ ADD ${APP_FILE} /opt/jboss/wildfly/standalone/deployments/${APP_FILE}
 ADD standalone-ha-1.xml /opt/jboss/wildfly/standalone/configuration/standalone-ha-1.xml
 ADD standalone-ha-2.xml /opt/jboss/wildfly/standalone/configuration/standalone-ha-2.xml
 ADD standalone-ha-3.xml /opt/jboss/wildfly/standalone/configuration/standalone-ha-3.xml
+ADD standalone-ha-4.xml /opt/jboss/wildfly/standalone/configuration/standalone-ha-4.xml
 
 # Add user for adminstration purpose
 RUN /opt/jboss/wildfly/bin/add-user.sh admin admin123 --silent
