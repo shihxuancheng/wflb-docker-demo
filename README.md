@@ -32,7 +32,7 @@ docker pull shihxuancheng/wildfly-cluster:latest
     ``docker run -d -p 8082:8080 -p 9992:9990 --name wild2 -h wild2 --network wildnetwork -l traefik.backend=wild1 -l traefik.frontend.rule=PathPrefix:/zkweb shihxuancheng/wildfly-cluster``  
 
     建立並執行traefik docker container  
-    ``docker run -d -p 8080:8080 -p 80:80 --name wild-balancer --network wildnetwork -l traefik.enable=false -v /var/run/docker.sock:/var/run/docker.sock -v $PWD/traefik.toml:/etc/traefik/traefik.toml traefik``  
+    ``docker run -d -p 9090:8080 -p 80:80 --name wild-balancer --network wildnetwork -l traefik.enable=false -v /var/run/docker.sock:/var/run/docker.sock -v $PWD/traefik.toml:/etc/traefik/traefik.toml traefik``  
 
 2. 透過**docker compose**  
 ```
@@ -41,6 +41,6 @@ docker-compose up -d
 
 ## 參考
 * [Traefik](https://traefik.io/)  
-* [Docker](https://www.google.com.tw/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwii842D5NvYAhVDVLwKHSgJA1QQFggmMAA&url=https%3A%2F%2Fwww.docker.com%2F&usg=AOvVaw3p9e1qPvdfjCrUwPYAhUlS)  
+* [Docker](https://www.docker.com/)  
 * [Wildfly](http://wildfly.org/)  
 
