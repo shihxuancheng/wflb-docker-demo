@@ -10,9 +10,19 @@ Example on how to setup a Wildfly cluster using Docker
 <p align="center">
     <img src="https://docs.traefik.io/img/architecture.png" width="75%"/>
 </p>
+## 建立docker image
 
 ## 如何執行
-1. 透過**docker cli**
+1. 透過**docker cli**  
+    建立private network  
+    ``docker network create --driver=bridge --subnet=172.28.0.0/16 --ip-range=172.28.5.0/24 --gateway=172.28.5.254  wildnetwork``  
+
+    執行並執行wildfly docker container  
+    ``docker run -d -p 8081:8080 -p 9991:9990 --name wild1 --network wildnetwork  shihxuancheng/wildfly-cluster``  
+    ``docker run -d -p 8082:8080 -p 9992:9990 --name wild2 --network wildnetwork  shihxuancheng/wildfly-cluster``  
+
+    建立並執行traefik docker container  
+    ``docker run -d -p 8080:8080 -p 80:80 -v $PWD/traefik.toml:/etc/traefik/traefik.toml traefik``  
 
 2. 透過**docker compose**  
 ```
