@@ -8,7 +8,7 @@ Example on how to setup a Wildfly cluster using Docker
 <img src="https://ms-vsts.gallerycdn.vsassets.io/extensions/ms-vsts/jboss-wildfly-management-extension/0.112.1/1485289762175/Microsoft.VisualStudio.Services.Icons.Default" width="200px"/>
 </p>
 <p align="center">
-    <img src="https://docs.traefik.io/img/architecture.png" width="75%"/>
+    <img src="https://docs.traefik.io/img/architecture.png" width="85%"/>
 </p>
 ## 建立docker image
 1. 本地端建立
@@ -16,13 +16,13 @@ Example on how to setup a Wildfly cluster using Docker
 ./build.sh
 ```  
 
-2. Pull from docker hub
+2. Pull from [Docker Hub](https://hub.docker.com/r/shihxuancheng/wildfly-cluster/)
 ```
 docker pull shihxuancheng/wildfly-cluster:latest
 ```  
 
 ## 執行
-1. 透過**docker cli**  
+1. 透過**[Docker cli](https://docs.docker.com/engine/reference/commandline/cli/)**  
     建立private network  
     ``docker network create --driver=bridge --subnet=172.28.0.0/16 --ip-range=172.28.5.0/24 --gateway=172.28.5.254  wildnetwork``  
 
@@ -34,7 +34,7 @@ docker pull shihxuancheng/wildfly-cluster:latest
     建立並執行traefik docker container  
     ``docker run -d -p 9090:8080 -p 80:80 --name wild-balancer --network wildnetwork -l traefik.enable=false -v /var/run/docker.sock:/var/run/docker.sock -v $PWD/traefik.toml:/etc/traefik/traefik.toml traefik``  
 
-2. 透過**docker compose**  
+2. 透過**[Docker Compose](https://docs.docker.com/compose/)**  
 ```
 docker-compose up -d
 ```  
