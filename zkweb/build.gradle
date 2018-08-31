@@ -1,0 +1,122 @@
+plugins {
+    id 'com.bmuschko.docker-remote-api' version '3.6.1'
+    id 'war'
+}
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+compileJava.options.encoding = "UTF-8"
+
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+
+group 'com.wanhai.tml'
+version '1.0.1'
+
+ext{
+    baseImgName="${docker_rep_url}/jboss/wildfly-base"
+    baseImgTag="latest"
+    targetImgName="${docker_rep_url}/wanhai/demo/${project.name.replaceAll("_","-").toLowerCase()}"
+    targetImgTag="${project.version}"
+}
+/***************Gardle Docker plugin setting***************************/
+docker{
+    registryCredentials {
+        url = "http://${docker_rep_url}"
+        username = docker_rep_user
+        password = docker_rep_password
+    }
+}
+task prepareDockerBuild(type: Copy, dependsOn:build){
+    from "${buildDir}/libs/${war.archiveName}"
+    into "${buildDir}/docker"
+}
+
+task createDockerFile(type: Dockerfile,dependsOn: prepareDockerBuild){
+    destFile=project.file("${buildDir}/docker/Dockerfile")
+    from "${baseImgName}:${baseImgTag}"
+    label(['Maintainer':'richard_shih@wanhai.com'])
+    copyFile "$war.archiveName",'${JBOSS_HOME}/standalone/deployments'
+}
+
+task buildImage(type: DockerBuildImage, dependsOn: createDockerFile){
+    inputDir = createDockerFile.destFile.parentFile
+    tag="${targetImgName}:${targetImgTag}"
+}
+
+task pushImage(type: DockerPushImage, dependsOn: buildImage){
+    imageName=buildImage.tag
+}
+/**********************************************************************/
+
+/****************************Pipleline Tasks***************************/
+
+/**
+ * build & deploy to server
+ */
+task deploy(type: Exec,dependsOn: 'release'){
+    def stackName="TML-${project.environment.toUpperCase()}"
+    def serviceName =  "${project.name.replaceAll('_', '-')}"
+    def scriptPath = "${buildDir}/deploy.sh"
+    doFirst{
+        //carete upgrade script before task start
+        if(project.hasProperty('isCI') && Boolean.valueOf(project.isCI)){
+            File f = new File(scriptPath);
+            f.delete()
+            f.withWriter('utf-8') {writer ->
+                writer.writeLine "rancher export ${stackName} && cd ${stackName}"
+                writer.writeLine "rancher up -d --pull --upgrade --force-upgrade ${serviceName}"
+                writer.writeLine "cd .. && rm -rf ${stackName}"
+            }
+            f.setExecutable(true)
+        }
+    }
+    if(project.hasProperty('isCI') && Boolean.valueOf(project.isCI)){
+        commandLine scriptPath
+    }
+}
+/**
+ * build & push to repository
+ */
+task release(dependsOn: build){
+    if(project.hasProperty('isCI') && Boolean.valueOf(project.isCI)){
+        dependsOn pushImage
+    }
+}
+
+/**
+ * Entry point of pipleline
+ */
+task pipleline(dependsOn: build){
+    if(project.hasProperty('isCI') && Boolean.valueOf(project.isCI)){
+        if(project.hasProperty('isRelease') && Boolean.valueOf(project.isRelease)){
+            dependsOn release
+        }
+        if(project.hasProperty('isDeploy') && Boolean.valueOf(project.isDeploy)){
+            dependsOn deploy
+        }
+    }
+}
+/**********************************************************************/
+war{
+    manifest {
+        attributes("Implementation-Title": project.name,
+                "Implementation-Version": project.version,
+                "Implementation-Vendor":"WANHAI LINES LTD.",
+                "Built-By":"IT Division",
+                "Greated-By":"Gradle $gradle.gradleVersion",
+                "Java-Version": System.getProperty("java.version") + " " + "(" + System.getProperty("java.vm.vendor") + ")")
+    }
+}
+repositories {
+    maven {
+        url "http://${maven_rep_url}/repository/maven-public/"
+    }
+}
+dependencies {
+    providedCompile 'org.zkoss.zk:zkbind:8.0.2.2',
+            'org.zkoss.zk:zhtml:8.0.2.2',
+            'org.zkoss.zk:zkplus:8.0.2.2',
+            'org.zkoss.zk:zul:8.0.2.2'
+    providedCompile 'javax:javaee-api:7.0'
+}
