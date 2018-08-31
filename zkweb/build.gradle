@@ -41,11 +41,11 @@ task createDockerFile(type: Dockerfile,dependsOn: prepareDockerBuild){
 
 task buildImage(type: DockerBuildImage, dependsOn: createDockerFile){
     inputDir = createDockerFile.destFile.parentFile
-    tag="${targetImgName}:${targetImgTag}"
+    tags=["${targetImgName}:${targetImgTag}","${targetImgName}:latest"]
 }
 
 task pushImage(type: DockerPushImage, dependsOn: buildImage){
-    imageName=buildImage.tag
+    imageName=buildImage.tags[0]
 }
 /**********************************************************************/
 
