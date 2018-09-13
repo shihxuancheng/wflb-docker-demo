@@ -55,7 +55,7 @@ task pushImage(type: DockerPushImage, dependsOn: buildImage){
  * build & deploy to server
  */
 task deploy(type: Exec,dependsOn: 'release'){
-    def stackName="TML-${project.environment.toUpperCase()}"
+    def stackName="DEMOS"
     def serviceName =  "${project.name.replaceAll('_', '-')}"
     def scriptPath = "${buildDir}/deploy.sh"
     doFirst{
