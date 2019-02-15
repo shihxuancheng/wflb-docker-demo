@@ -88,7 +88,7 @@ task release(dependsOn: build){
 /**
  * Entry point of pipleline
  */
-task pipleline(dependsOn: build){
+task pipeline(dependsOn: build){
     if(project.hasProperty('isCI') && Boolean.valueOf(project.isCI)){
         if(project.hasProperty('isRelease') && Boolean.valueOf(project.isRelease)){
             dependsOn release
