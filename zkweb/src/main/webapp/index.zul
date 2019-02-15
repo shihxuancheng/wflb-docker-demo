@@ -1,7 +1,7 @@
 <zk xmlns="http://www.zkoss.org/2005/zul" xmlns:n="http://www.zkoss.org/2005/zk/native">
     <window width="600px" height="450px" border="true" closable="true"
             viewModel="@id('vm')@init('com.wanhai.zk.TestVM')">
-        <caption label="Test ZK Web - 1.0.1"/>
+        <caption label="Test ZK Web - 1.0.2"/>
         <vlayout vflex="1">
             <n:table width="100%">
                 <!--<n:p>-->
