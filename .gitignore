@@ -1,2 +1,4 @@
 /apptest/target/
 .DS_Store
+build
+.gradle

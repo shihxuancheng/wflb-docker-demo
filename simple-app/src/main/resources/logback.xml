@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--定義日誌檔案的儲存地址 勿在 LogBack 的配置中使用相對路徑-->
+    <property name="LOG_HOME" value="c:/log"/>
+    <!-- 控制檯輸出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 日誌輸出編碼 -->
+        <Encoding>UTF-8</Encoding>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <!--格式化輸出：%d表示日期，%thread表示執行緒名，%-5level：級別從左顯示5個字元寬度%msg：日誌訊息，%n是換行符-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n
+            </pattern>
+        </layout>
+    </appender>
+    <!-- 按照每天生成日誌檔案 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <Encoding>UTF-8</Encoding>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日誌檔案輸出的檔名-->
+            <FileNamePattern>${LOG_HOME}/myApp.log.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <!--格式化輸出：%d表示日期，%thread表示執行緒名，%-5level：級別從左顯示5個字元寬度%msg：日誌訊息，%n是換行符-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n
+            </pattern>
+        </layout>
+        <!--日誌檔案最大的大小-->
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+    <!-- show parameters for hibernate sql 專為 Hibernate 定製 -->
+<!--    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>-->
+<!--    <logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="DEBUG"/>-->
+<!--    <logger name="org.hibernate.SQL" level="DEBUG"/>-->
+<!--    <logger name="org.hibernate.engine.QueryParameters" level="DEBUG"/>-->
+<!--    <logger name="org.hibernate.engine.query.HQLQueryPlan" level="DEBUG"/>-->
+    <!-- 日誌輸出級別 -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+<!--        <appender-ref ref="FILE"/>-->
+    </root>
+    <!--日誌非同步到資料庫 -->
+<!--    <appender name="DB" class="ch.qos.logback.classic.db.DBAppender">-->
+<!--        &lt;!&ndash;日誌非同步到資料庫 &ndash;&gt;-->
+<!--        <connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">-->
+<!--            &lt;!&ndash;連線池 &ndash;&gt;-->
+<!--            <dataSource class="com.mchange.v2.c3p0.ComboPooledDataSource">-->
+<!--                <driverClass>com.mysql.jdbc.Driver</driverClass>-->
+<!--                <url>jdbc:mysql://127.0.0.1:3306/databaseName</url>-->
+<!--                <user>root</user>-->
+<!--                <password>root</password>-->
+<!--            </dataSource>-->
+<!--        </connectionSource>-->
+<!--    </appender>-->
+    -->
+</configuration>

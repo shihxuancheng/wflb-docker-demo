@@ -1,0 +1,35 @@
+plugins {
+    id 'war'
+}
+
+group 'com.wanhai.apps'
+version '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+war {
+    manifest {
+        attributes("Implementation-Title": project.name,
+                "Implementation-Version": project.version,
+                "Implementation-Vendor": "WANHAI LINES LTD.",
+                "Built-By": "IT Division",
+                "Greated-By": "Gradle $gradle.gradleVersion",
+                "Java-Version": System.getProperty("java.version") + " " + "(" + System.getProperty("java.vm.vendor") + ")")
+    }
+}
+def zk_ver="8.0.2.2"
+dependencies {
+    implementation "org.zkoss.zk:zkbind:${zk_ver}",
+            "org.zkoss.zk:zhtml:${zk_ver}",
+            "org.zkoss.zk:zkplus:${zk_ver}",
+            "org.zkoss.zk:zul:${zk_ver}"
+
+    implementation 'org.slf4j:slf4j-api:1.7.25',
+            'ch.qos.logback:logback-classic:1.2.10',
+            'ch.qos.logback:logback-core:1.2.10'
+
+    providedCompile 'javax:javaee-api:7.0'
+
+}

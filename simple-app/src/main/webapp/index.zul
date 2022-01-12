@@ -1,0 +1,13 @@
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:n="http://www.zkoss.org/2005/zk/native">
+    <window width="600px" sizable="true" vflex="min" border="true" closable="true"
+            viewModel="@id('vm')@init('com.wanhai.apps.TestVM')">
+        <caption label="App Ver- ${vm.version}, ZK Ver - ${desktop.webApp.version}"/>
+        <vlayout height="300px">
+            <n:h1>Built by zk + wildfly</n:h1>
+        </vlayout>
+        <hbox width="100%" align="center" pack="center">
+            <button label="Execute" onClick="@command('execute')"/>
+        </hbox>
+
+    </window>
+</zk>
