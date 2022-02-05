@@ -4,7 +4,7 @@ import org.zkoss.bind.annotation.Command;
 import org.zkoss.zk.ui.util.Clients;
 
 public class TestVM {
-    private String version = "1.0.0";
+    private static final String version = "1.0.0";
 
 
     @Command("execute")
